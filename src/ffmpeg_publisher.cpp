@@ -234,12 +234,15 @@ FFMPEGPublisher::QoSType FFMPEGPublisher::initialize(
   }
   // bump queue size to 2 * distance between keyframes
 #ifdef IMAGE_TRANSPORT_USE_QOS
-  custom_qos.keep_last(
-      std::max(static_cast<int>(custom_qos.get_rmw_qos_profile().depth),
-               2 * encoder_.getGOPSize()));
+  custom_qos = rmw_qos_profile_sensor_data;
+  // custom_qos.keep_last(
+  //     std::max(static_cast<int>(custom_qos.get_rmw_qos_profile().depth),
+  //              2 * encoder_.getGOPSize()));
 #else
-  custom_qos.depth =
-      std::max(static_cast<int>(custom_qos.depth), 2 * encoder_.getGOPSize());
+  custom_qos = rmw_qos_profile_sensor_data;
+  // custom_qos.depth =
+  //     std::max(static_cast<int>(custom_qos.depth), 2 *
+  //     encoder_.getGOPSize());
 #endif
   return (custom_qos);
 }
